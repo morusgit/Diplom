@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 from users.models import UserRoles
+from rest_framework.exceptions import PermissionDenied
 
 
 class IsOwner(BasePermission):
@@ -13,6 +14,8 @@ class IsModerator(BasePermission):
     message = 'Доступ запрещен. Вы не являетесь модератором'
 
     def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            raise PermissionDenied('Доступ запрещен. Пользователь не авторизован')
         if request.user.role == UserRoles.MODERATOR:
             return True
         return False

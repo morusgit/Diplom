@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -8,6 +9,12 @@ NULLABLE = {
     'null': True,
     'blank': True,
 }
+
+
+class UserRoles(models.TextChoices):
+    MEMBER = 'member', _('member')
+    MODERATOR = 'moderator', _('moderator')
+    ADMINISTRATOR = 'admin', _('admin')
 
 
 class CustomUserManager(BaseUserManager):
@@ -23,11 +30,15 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
+
+        if extra_fields.get('role') is not UserRoles.ADMINISTRATOR:
+            extra_fields['role'] = UserRoles.ADMINISTRATOR
 
         return self.create_user(email, password, **extra_fields)
 
@@ -40,11 +51,15 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=False, verbose_name='активирован')
     telegram = models.CharField(max_length=50, verbose_name='телеграм', **NULLABLE)
     confirmation_code = models.CharField(max_length=50, verbose_name='код подтверждения', **NULLABLE)
+    role = models.CharField(max_length=25, choices=UserRoles.choices, default=UserRoles.MEMBER, verbose_name='роль')
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
 
     class Meta:
         verbose_name = 'пользователь'

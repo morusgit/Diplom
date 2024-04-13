@@ -37,7 +37,9 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='почта')
     first_name = models.CharField(max_length=150, verbose_name='имя', **NULLABLE)
     last_name = models.CharField(max_length=150, verbose_name='фамилия', **NULLABLE)
+    is_active = models.BooleanField(default=False, verbose_name='активирован')
     telegram = models.CharField(max_length=50, verbose_name='телеграм', **NULLABLE)
+    confirmation_code = models.CharField(max_length=50, verbose_name='код подтверждения', **NULLABLE)
 
     objects = CustomUserManager()
 

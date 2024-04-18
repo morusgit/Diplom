@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from modules.models import Module
+from modules.models import Module, Subscription
 from modules.validators import YoutubeUrlValidator, ForbiddenWordsValidator
 
 
@@ -20,3 +20,9 @@ class ModuleSerializer(serializers.ModelSerializer):
                 message='Модуль с таким названием и описанием уже существует'
             ),
         ]
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = '__all__'

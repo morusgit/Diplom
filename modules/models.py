@@ -45,3 +45,17 @@ class Module(models.Model):
         verbose_name = 'модуль'
         verbose_name_plural = 'модули'
         ordering = ('serial_number',)
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, verbose_name='модуль')
+
+    def __str__(self):
+        return f'{self.user} - {self.module}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
+        ordering = ('pk',)
+        unique_together = ('user', 'module')

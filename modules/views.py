@@ -4,10 +4,10 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from modules.models import Module
+from modules.models import Module, Subscription
 from modules.paginators import ModulePagination
 from modules.permissions import IsOwner, IsModerator, IsCustomAdmin
-from modules.serializers import ModuleSerializer
+from modules.serializers import ModuleSerializer, SubscriptionSerializer
 from rest_framework.response import Response
 
 
@@ -73,4 +73,21 @@ class SetLikeAPIView(APIView):
                 module.save()
                 return Response({'message': 'Лайк успешно поставлен'}, status=status.HTTP_200_OK)
         except Module.DoesNotExist:
+            return Response({'error': 'Модуль не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SubscriptionView(APIView):
+    def post(self, request, pk, *args, **kwargs):
+        user = request.user
+        module = get_object_or_404(Module, pk=pk)
+
+        if module:
+            subscription, created = Subscription.objects.get_or_create(user=user, module=module)
+            if created:
+                message = 'Подписка оформлена'
+            else:
+                subscription.delete()
+                message = 'Подписка отменена'
+            return Response({'message': message}, status=status.HTTP_200_OK)
+        else:
             return Response({'error': 'Модуль не найден'}, status=status.HTTP_404_NOT_FOUND)

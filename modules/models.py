@@ -19,6 +19,14 @@ class Module(models.Model):
     last_update = models.DateField(auto_now=True, verbose_name='последнее обновление')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец')
     is_published = models.BooleanField(default=True, verbose_name='опубликован')
+    views_count = models.PositiveIntegerField(default=0, verbose_name='количество просмотров')
+    likes = models.PositiveIntegerField(default=0, verbose_name='количество лайков')
+    liked_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='liked_modules',
+        verbose_name='лайкнувшие',
+        blank=True
+    )
 
     def save(self, *args, **kwargs):
         """ Сохранение порядкового номера """

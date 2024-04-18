@@ -2,7 +2,7 @@ from django.urls import path
 
 from modules.apps import ModulesConfig
 from modules.views import ModuleCreateAPIView, ModuleListAPIView, ModuleDetailAPIView, ModuleDestroyAPIView, \
-    ModuleUpdateAPIView
+    ModuleUpdateAPIView, SetLikeAPIView
 
 app_name = ModulesConfig.name
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('detail/<int:pk>/', ModuleDetailAPIView.as_view(), name='module_detail'),
     path('delete/<int:pk>/', ModuleDestroyAPIView.as_view(), name='module_delete'),
     path('update/<int:pk>/', ModuleUpdateAPIView.as_view(), name='module_update'),
+    path('like/<int:module_id>/', SetLikeAPIView.as_view(), name='module_like'),
 ]

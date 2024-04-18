@@ -91,3 +91,9 @@ class SubscriptionView(APIView):
             return Response({'message': message}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Модуль не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SubscriptionListAPIView(ListAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsModerator | IsCustomAdmin]

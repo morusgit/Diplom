@@ -24,5 +24,5 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Module
+        model = Subscription
         fields = '__all__'

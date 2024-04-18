@@ -23,6 +23,16 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    module_name = serializers.SerializerMethodField()
+    user_email = serializers.SerializerMethodField()
+
+    def get_module_name(self, obj):
+        return obj.module.name
+
+    def get_user_email(self, obj):
+        return obj.user.email
+
     class Meta:
         model = Subscription
         fields = '__all__'
+        extra_fields = ['module_name', 'user_email']

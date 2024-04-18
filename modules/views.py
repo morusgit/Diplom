@@ -10,6 +10,8 @@ from modules.permissions import IsOwner, IsModerator, IsCustomAdmin
 from modules.serializers import ModuleSerializer, SubscriptionSerializer
 from rest_framework.response import Response
 
+from modules.tasks import send_mail_notification_module_changed
+
 
 # Create your views here.
 
@@ -51,6 +53,26 @@ class ModuleUpdateAPIView(UpdateAPIView):
     serializer_class = ModuleSerializer
     queryset = Module.objects.all()
     permission_classes = [IsOwner | IsModerator | IsCustomAdmin]
+
+    def perform_update(self, serializer):
+        module = serializer.instance
+        old_name = module.name
+
+        for field in self.request.data:
+            if hasattr(module, field):
+                setattr(module, field, self.request.data.get(field))
+
+        module.save()
+
+        subscriptions = Subscription.objects.filter(module=module).select_related('user', 'module')
+        for subscription in subscriptions:
+            send_mail_notification_module_changed.delay(subscription.user.email, old_name)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
 
 
 class SetLikeAPIView(APIView):

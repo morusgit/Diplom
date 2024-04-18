@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_celery_beat',
+    'drf_yasg',
+    'corsheaders',
 ]
 
 
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -212,3 +215,16 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(minutes=60),  # Расписание выполнения задачи (например, каждые 10 минут)
     },
 }
+
+# CORS
+# параметр CORS для указания разрешенных источников
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+]
+# позволяет определить список доверенных доменов, из которых
+# разрешено отправлять запросы без проверки CSRF-токена
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = False

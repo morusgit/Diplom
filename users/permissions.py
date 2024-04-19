@@ -4,6 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 
 
 class IsOwner(BasePermission):
+    """ Права для проверки владельца модуля. """
     message = 'Доступ запрещен. Вы не являетесь владельцем.'
 
     def has_object_permission(self, request, view, obj):
@@ -11,6 +12,7 @@ class IsOwner(BasePermission):
 
 
 class IsModerator(BasePermission):
+    """ Права для проверки модератора. """
     message = 'Доступ запрещен. Вы не являетесь модератором'
 
     def has_permission(self, request, view):

@@ -17,6 +17,7 @@ from modules.tasks import send_mail_notification_module_changed
 
 
 class ModuleCreateAPIView(CreateAPIView):
+    """ Создание модуля """
     serializer_class = ModuleSerializer
     permission_classes = [IsAuthenticated]
 
@@ -25,12 +26,14 @@ class ModuleCreateAPIView(CreateAPIView):
 
 
 class ModuleListAPIView(ListAPIView):
+    """ Список модулей """
     serializer_class = ModuleSerializer
     queryset = Module.objects.all()
     pagination_class = ModulePagination
 
 
 class ModuleDetailAPIView(RetrieveAPIView):
+    """ Подробная информация о модуле """
     serializer_class = ModuleSerializer
     queryset = Module.objects.all()
     permission_classes = [IsOwner | IsModerator | IsCustomAdmin]
@@ -44,17 +47,20 @@ class ModuleDetailAPIView(RetrieveAPIView):
 
 
 class ModuleDestroyAPIView(DestroyAPIView):
+    """ Удаление модуля """
     serializer_class = ModuleSerializer
     queryset = Module.objects.all()
     permission_classes = [IsOwner | IsCustomAdmin]
 
 
 class ModuleUpdateAPIView(UpdateAPIView):
+    """ Редактирование модуля """
     serializer_class = ModuleSerializer
     queryset = Module.objects.all()
     permission_classes = [IsOwner | IsModerator | IsCustomAdmin]
 
     def perform_update(self, serializer):
+        """ Отправка письма при изменении модуля """
         module = serializer.instance
         old_name = module.name
 
@@ -76,6 +82,7 @@ class ModuleUpdateAPIView(UpdateAPIView):
 
 
 class SetLikeAPIView(APIView):
+    """ Поставить лайк для модуля """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, module_id):
@@ -99,6 +106,7 @@ class SetLikeAPIView(APIView):
 
 
 class SubscriptionView(APIView):
+    """ Подписка на модуль """
     def post(self, request, pk, *args, **kwargs):
         user = request.user
         module = get_object_or_404(Module, pk=pk)
@@ -116,6 +124,7 @@ class SubscriptionView(APIView):
 
 
 class SubscriptionListAPIView(ListAPIView):
+    """ Список подписок """
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
     permission_classes = [IsModerator | IsCustomAdmin]

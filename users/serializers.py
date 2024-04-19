@@ -3,6 +3,7 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """ Сериализатор пользователя. """
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):

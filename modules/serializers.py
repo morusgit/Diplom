@@ -5,6 +5,7 @@ from modules.validators import YoutubeUrlValidator, ForbiddenWordsValidator
 
 
 class ModuleSerializer(serializers.ModelSerializer):
+    """ Сериализатор Модуля  """
     owner = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -23,6 +24,7 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    """ Сериализатор Подписки  """
     module_name = serializers.SerializerMethodField()
     user_email = serializers.SerializerMethodField()
 

@@ -12,13 +12,16 @@ NULLABLE = {
 
 
 class UserRoles(models.TextChoices):
+    """Роли пользователей."""
     MEMBER = 'member', _('member')
     MODERATOR = 'moderator', _('moderator')
     ADMINISTRATOR = 'admin', _('admin')
 
 
 class CustomUserManager(BaseUserManager):
+    """Кастомный менеджер для модели пользователя."""
     def create_user(self, email, password=None, **extra_fields):
+        """Создает и сохраняет пользователя с имейлом."""
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
@@ -28,6 +31,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """Создает и сохраняет пользователя супервайзера."""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -44,6 +48,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    """Модель пользователя."""
     username = None
     email = models.EmailField(unique=True, verbose_name='почта')
     first_name = models.CharField(max_length=150, verbose_name='имя', **NULLABLE)

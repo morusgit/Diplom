@@ -10,6 +10,7 @@ FORBIDDEN_WORDS = [
 
 
 class ForbiddenWordsValidator:
+    """ Валидатор проверяющий наличие запрещенных слов в поле field """
     def __init__(self, field):
         self.field = field
 
@@ -20,6 +21,7 @@ class ForbiddenWordsValidator:
 
 
 class YoutubeUrlValidator:
+    """ Валидатор проверяющий ссылку на видео """
     def __init__(self, field):
         self.field = field
 

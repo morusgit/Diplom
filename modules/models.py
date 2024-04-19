@@ -11,6 +11,7 @@ NULLABLE = {
 
 
 class Module(models.Model):
+    """Образовательный Модуль"""
     serial_number = models.PositiveIntegerField(unique=True, verbose_name='порядковый номер', default=0)
     name = models.CharField(max_length=150, verbose_name='название')
     description = models.TextField(verbose_name='описание', default='ваше описание модуля')
@@ -48,6 +49,7 @@ class Module(models.Model):
 
 
 class Subscription(models.Model):
+    """Подписка на Модуль"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
     module = models.ForeignKey(Module, on_delete=models.CASCADE, verbose_name='модуль')
 

@@ -15,11 +15,13 @@ from users.tasks import send_mail_notification, send_mail_confirmation
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
+    """ Просмотр пользователей и регистрация новых пользователей """
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
+        """ Установка прав для действий """
         if self.action in ['create']:
             permission_classes = [AllowAny]
 
@@ -35,6 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
+        """ Регистрация нового пользователя и отправка кода подтверждения """
         user = serializer.save()
         confirmation_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
 
@@ -47,6 +50,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class RegistrationConfirmationView(APIView):
+    """ Подтверждение регистрации """
     def post(self, request):
         email = request.data.get('email')
         confirmation_code = request.data.get('confirmation_code')

@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 
 from modules.models import Module, Subscription
-from modules.serializers import ModuleSerializer, SubscriptionSerializer
+from modules.serializers import ModuleSerializer
 from rest_framework import serializers
 from modules.validators import ForbiddenWordsValidator, YoutubeUrlValidator
 from users.models import User

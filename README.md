@@ -38,7 +38,8 @@
 ## Установка и запуск проекта:
 
 1. клонировать репозиторий: `git clone https://github.com/morusgit/Diplom` 
-2. установить виртуальную среду: `python -m venv .venv`
+2. установить виртуальную среду: `python -m venv .venv` (linux: `sudo apt install python3.10-venv` и 
+   `python3 -m venv .venv`)
 3. активировать виртуальную среду(Windows): `.venv\Scripts\Activate.ps1`
 4. активировать виртуальную среду(Linux): `source .venv/bin/activate`
 5. установить зависимости: `pip install -r requirements.txt`

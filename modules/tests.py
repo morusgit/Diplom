@@ -72,7 +72,8 @@ class ModuleTestCase(APITestCase):
         response = self.client.post('/modules/create/', data)
         print(response.json())
 
-        response = self.client.get('/modules/detail/1/')
+        module_id = response.json()['id']
+        response = self.client.get(f'/modules/detail/{module_id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()['name'], 'test')
 
@@ -87,7 +88,8 @@ class ModuleTestCase(APITestCase):
         response = self.client.post('/modules/create/', data)
         print(response.json())
 
-        response = self.client.delete('/modules/delete/1/')
+        module_id = response.json()['id']
+        response = self.client.delete(f'/modules/delete/{module_id}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_update_module(self):
@@ -101,6 +103,7 @@ class ModuleTestCase(APITestCase):
         response = self.client.post('/modules/create/', data)
         print(response.json())
 
+        module_id = response.json()['id']
         data_update = {
             'user': self.user.pk,
             'name': 'test_update',
@@ -108,7 +111,7 @@ class ModuleTestCase(APITestCase):
             'serial_number': 1
         }
 
-        response = self.client.put('/modules/update/1/', data_update)
+        response = self.client.put(f'/modules/update/{module_id}/', data_update)
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()['name'], 'test_update')
@@ -125,10 +128,10 @@ class ModuleTestCase(APITestCase):
         response = self.client.post('/modules/create/', data)
         print(response.json())
 
-        response = self.client.post('/modules/like/1/')
+        module_id = response.json()['id']
+        response = self.client.post(f'/modules/like/{module_id}/')
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
     def test_create_module_with_serial_number(self):
         response = self.client.post(
             '/modules/create/', {

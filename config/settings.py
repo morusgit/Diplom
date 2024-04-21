@@ -31,7 +31,7 @@ DEBUG = True
 
 SITE_URL = os.getenv('SITE_URL')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
